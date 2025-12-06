@@ -248,3 +248,18 @@
     margin: 0;
     transition: all var(--transition-base);
 }
+
+@media (max-width: 768px) {
+
+    .upload-card,
+    .stat-card,
+    .demo-limit-card {
+        width: calc(100% - var(--spacing-md));
+        margin: 0 auto;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}

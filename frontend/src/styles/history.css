@@ -196,12 +196,16 @@
     }
 
     .history-sidebar {
-        width: 100%;
+        width: calc(100% - var(--spacing-md));
         position: static;
         margin-bottom: var(--spacing-lg);
     }
 
     .history-grid {
         grid-template-columns: 1fr;
+    }
+
+    .history-controls {
+        flex-wrap: wrap;
     }
 }

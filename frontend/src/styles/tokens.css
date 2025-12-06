@@ -75,3 +75,27 @@
     font-size: var(--font-size-sm);
     line-height: 1.6;
 }
+
+@media (max-width: 768px) {
+    .token-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .token-actions {
+        width: calc(100% - var(--spacing-md));
+        justify-content: flex-end;
+        margin-top: var(--spacing-sm);
+    }
+
+    .generate-token-card,
+    .api-docs-card {
+        padding: var(--spacing-lg);
+    }
+
+    .api-docs-card pre {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-md);
+    }
+}
