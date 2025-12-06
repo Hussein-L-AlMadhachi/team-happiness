@@ -45,16 +45,12 @@
   <div id="app-view" class="view active">
     <Navbar />
 
-    {#if $currentView === "dashboard"}
-      <Dashboard />
-    {:else if $currentView === "history"}
+    {#if $currentView === "/" || $currentView === "history"}
       <History />
     {:else if $currentView === "demo"}
       <Demo />
     {:else if $currentView === "tokens"}
       <Tokens />
-    {:else if $currentView === "folders"}
-      <Folders />
     {/if}
   </div>
 {/if}
