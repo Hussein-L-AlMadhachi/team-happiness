@@ -1,0 +1,26 @@
+{
+  "name": "team-happiness-backend",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "db:create": "tsc && node ./dist/cli/create.js",
+    "db:alter": "tsc && node ./dist/cli/alter.js",
+    "dev": "tsc && node ./dist/src/main.js"
+  },
+  "dependencies": {
+    "@types/multer": "^2.0.0",
+    "dotenv": "^17.2.3",
+    "enders-sync": "latest",
+    "express": "latest",
+    "jsonwebtoken": "latest",
+    "multer": "^2.0.2",
+    "ollama": "^0.6.3",
+    "pg-norm": "latest",
+    "redis": "^5.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/jsonwebtoken": "latest",
+    "@types/node": "latest"
+  }
+}
