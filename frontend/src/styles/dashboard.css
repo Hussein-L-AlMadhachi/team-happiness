@@ -262,4 +262,8 @@
         grid-template-columns: 1fr;
         justify-items: center;
     }
+
+    .drop-zone {
+        padding: var(--spacing-xl);
+    }
 }
