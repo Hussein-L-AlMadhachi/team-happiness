@@ -149,7 +149,7 @@ export const setupUploadRoutes = (app: express.Application) => {
                 "owner": uid,
                 "file_hash": file_hash,
                 "description": description,
-                "file_name": req.file.filename
+                "file_name": `${uploadDir}/${req.file.filename}`
             });
             console.log("inserted")
         } catch (error) {

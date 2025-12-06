@@ -33,10 +33,11 @@ export async function deleteUpload(metadata: Metadata, id: number) {
         throw new Error("Unexpected error: uploaded file id cannot be anythin but a number");
     }
 
-    const [file] = await uploads.deleteFromUploadsForUser(uid, id);
+    const [file] = await uploads.fetch(id)
+    await uploads.deleteFromUploadsForUser(uid, id);
 
-    if (file === undefined) {
-        throw new Error("failed to delete file")
+    if (!file) {
+        throw new Error("failed to delete file: no such file available")
     }
 
     fs.unlinkSync(file.file_name);

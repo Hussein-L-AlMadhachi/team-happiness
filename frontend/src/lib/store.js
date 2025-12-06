@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store';
-import { publicRPC } from './api.js';
+import { publicRPC, usersRPC } from './api.js';
 
 // ===================================
 // Storage Manager
@@ -73,24 +73,29 @@ export const stats = writable({
 // Actions
 // ===================================
 
-export const loadUserData = () => {
+export const loadUserData = async () => {
     const user = get(currentUser);
     if (!user) return;
 
-    const userUploads = Storage.load(`uploads_${user.email}`, []);
+    try {
+        const userUploads = await usersRPC.getUploads();
+        uploads.set(userUploads);
+
+        stats.set({
+            totalUploads: userUploads.length,
+            cacheHits: 0 // Reset on load
+        });
+    } catch (e) {
+        console.error("Failed to load uploads:", e);
+    }
+
     const userProjects = Storage.load(`projects_${user.email}`, []);
     const userCache = Storage.load(`cache_${user.email}`, {});
     const userTokens = Storage.load(`tokens_${user.email}`, []);
 
-    uploads.set(userUploads);
     projects.set(userProjects);
     cache.set(userCache);
     tokens.set(userTokens);
-
-    stats.set({
-        totalUploads: userUploads.length,
-        cacheHits: 0 // Reset on load
-    });
 };
 
 export const saveUpload = (upload) => {
@@ -99,27 +104,34 @@ export const saveUpload = (upload) => {
 
     uploads.update(u => {
         const newUploads = [upload, ...u];
-        Storage.save(`uploads_${user.email}`, newUploads);
+        // Storage.save(`uploads_${user.email}`, newUploads);
         return newUploads;
     });
 
     stats.update(s => ({ ...s, totalUploads: s.totalUploads + 1 }));
 };
 
-export const deleteUpload = (uploadId) => {
+export const deleteUpload = async (uploadId) => {
     const user = get(currentUser);
     if (!user) return;
 
-    uploads.update(u => {
-        const newUploads = u.filter(item => item.id !== uploadId);
-        Storage.save(`uploads_${user.email}`, newUploads);
-        return newUploads;
-    });
+    try {
+        await usersRPC.deleteUpload(uploadId);
 
-    stats.update(s => {
-        const currentUploads = get(uploads);
-        return { ...s, totalUploads: currentUploads.length };
-    });
+        uploads.update(u => {
+            const newUploads = u.filter(item => item.id !== uploadId);
+            // Storage.save(`uploads_${user.email}`, newUploads); // No longer needed
+            return newUploads;
+        });
+
+        stats.update(s => {
+            const currentUploads = get(uploads);
+            return { ...s, totalUploads: currentUploads.length };
+        });
+    } catch (e) {
+        console.error("Failed to delete upload:", e);
+        throw e;
+    }
 };
 
 export const clearHistory = () => {
@@ -127,7 +139,7 @@ export const clearHistory = () => {
     if (!user) return;
 
     uploads.set([]);
-    Storage.save(`uploads_${user.email}`, []);
+    // Storage.save(`uploads_${user.email}`, []);
 
     stats.update(s => ({ ...s, totalUploads: 0, cacheHits: 0 }));
 };

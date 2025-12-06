@@ -3,7 +3,6 @@
     import {
         uploads,
         deleteUpload,
-        clearHistory,
         projects,
         createProject,
         deleteProject,
@@ -69,13 +68,6 @@
         }
     };
 
-    const handleClearHistory = () => {
-        if (confirm("Are you sure you want to clear all history?")) {
-            clearHistory();
-            addToast("History cleared", "success");
-        }
-    };
-
     const openModal = (upload) => {
         selectedUpload = upload;
         showModal = true;
@@ -93,11 +85,15 @@
         }
     };
 
-    const deleteModalUpload = () => {
+    const deleteModalUpload = async () => {
         if (selectedUpload) {
-            deleteUpload(selectedUpload.id);
-            closeModal();
-            addToast("Upload deleted", "success");
+            try {
+                await deleteUpload(selectedUpload.id);
+                closeModal();
+                addToast("Upload deleted", "success");
+            } catch (e) {
+                addToast("Failed to delete upload", "error");
+            }
         }
     };
 </script>
@@ -282,11 +278,6 @@
                     placeholder="Search history..."
                     bind:value={searchQuery}
                 />
-                <button
-                    id="clear-history-btn"
-                    class="btn btn-outline"
-                    on:click={handleClearHistory}>Clear All</button
-                >
             </div>
 
             <div id="history-grid" class="history-grid">

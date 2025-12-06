@@ -4,9 +4,9 @@
         currentUser,
         cache,
         stats,
-        saveUpload,
         saveToCache,
         incrementCacheHits,
+        loadUserData,
     } from "./store.js";
     import { addToast } from "./toastStore.js";
 
@@ -84,15 +84,8 @@
                 saveToCache(hash, extractedText);
             }
 
-            // Save to history
-            const upload = {
-                id: Utils.generateId(),
-                image: await Utils.fileToBase64(currentFile),
-                text: extractedText,
-                timestamp: Date.now(),
-                hash: hash,
-            };
-            saveUpload(upload);
+            // Reload data from server to include the new upload
+            await loadUserData();
 
             step = "result";
         } catch (error) {
