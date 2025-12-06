@@ -1,0 +1,219 @@
+/* ===================================
+   Layout & Views
+   =================================== */
+.view {
+    /* display: none; Removed for Svelte routing */
+    min-height: 100vh;
+}
+
+.view.active {
+    display: block;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+}
+
+.page-header {
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+}
+
+.page-header h1 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.page-header p {
+    font-size: var(--font-size-lg);
+    color: var(--color-neutral-500);
+}
+
+/* ===================================
+   Navigation
+   =================================== */
+.navbar {
+    background: var(--color-bg-tertiary);
+    border-bottom: 1px solid var(--color-neutral-200);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xl);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    color: var(--color-neutral-700);
+}
+
+.nav-menu {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    color: var(--color-neutral-500);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-neutral-700);
+}
+
+.nav-link.active {
+    background: var(--color-accent-light);
+    color: var(--color-accent-primary);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+#user-name {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-neutral-700);
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--color-neutral-600);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+}
+
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    gap: var(--spacing-xl);
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--spacing-md);
+        gap: 0;
+    }
+
+    .nav-header {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-content {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding-top: var(--spacing-md);
+        gap: var(--spacing-md);
+        border-top: 1px solid var(--color-neutral-200);
+        margin-top: var(--spacing-md);
+    }
+
+    .nav-content.active {
+        display: flex;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+        gap: var(--spacing-xs);
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: var(--spacing-md);
+        justify-content: flex-start;
+    }
+
+    .nav-link span {
+        display: inline;
+        /* Show text in mobile menu */
+    }
+
+    .nav-user {
+        width: 100%;
+        justify-content: center;
+        padding-top: var(--spacing-md);
+        border-top: 1px solid var(--color-neutral-200);
+    }
+
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* ===================================
+   Main Content
+   =================================== */
+.main-content {
+    /* display: none; Removed for Svelte routing */
+    padding-top: var(--spacing-xl);
+    min-height: calc(100vh - 80px);
+}
+
+.main-content.active {
+    display: block;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

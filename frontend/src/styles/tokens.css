@@ -1,0 +1,77 @@
+/* ===================================
+   Tokens View
+   =================================== */
+.tokens-section {
+    display: grid;
+    gap: var(--spacing-xl);
+}
+
+.generate-token-card {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-neutral-200);
+    text-align: center;
+}
+
+.tokens-list h3 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.token-item {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-neutral-200);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.token-info {
+    flex: 1;
+}
+
+.token-value {
+    font-family: 'Courier New', monospace;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-neutral-700);
+    margin-bottom: var(--spacing-xs);
+    word-break: break-all;
+}
+
+.token-meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-neutral-500);
+}
+
+.token-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.api-docs-card {
+    background: var(--color-neutral-700);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    color: white;
+}
+
+.api-docs-card h3 {
+    color: white;
+    margin-bottom: var(--spacing-md);
+}
+
+.api-docs-card pre {
+    background: rgba(0, 0, 0, 0.3);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+}
