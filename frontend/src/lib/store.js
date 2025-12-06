@@ -77,10 +77,12 @@ export const loadUserData = () => {
     if (!user) return;
 
     const userUploads = Storage.load(`uploads_${user.email}`, []);
+    const userProjects = Storage.load(`projects_${user.email}`, []);
     const userCache = Storage.load(`cache_${user.email}`, {});
     const userTokens = Storage.load(`tokens_${user.email}`, []);
 
     uploads.set(userUploads);
+    projects.set(userProjects);
     cache.set(userCache);
     tokens.set(userTokens);
 
@@ -197,9 +199,98 @@ export const register = (name, email, password) => {
 export const logout = () => {
     currentUser.set(null);
     uploads.set([]);
+    projects.set([]);
     cache.set({});
     tokens.set([]);
     stats.set({ totalUploads: 0, cacheHits: 0 });
+};
+
+// ===================================
+// Project Actions
+// ===================================
+
+// Projects Store
+export const projects = writable([]);
+
+export const createProject = (name) => {
+    const user = get(currentUser);
+    if (!user) return;
+
+    const newProject = {
+        id: crypto.randomUUID(),
+        name,
+        created: new Date().toISOString(),
+        uploadIds: []
+    };
+
+    projects.update(p => {
+        const newProjects = [newProject, ...p];
+        Storage.save(`projects_${user.email}`, newProjects);
+        return newProjects;
+    });
+
+    return newProject;
+};
+
+export const deleteProject = (projectId) => {
+    const user = get(currentUser);
+    if (!user) return;
+
+    projects.update(p => {
+        const newProjects = p.filter(project => project.id !== projectId);
+        Storage.save(`projects_${user.email}`, newProjects);
+        return newProjects;
+    });
+};
+
+export const updateProject = (projectId, updates) => {
+    const user = get(currentUser);
+    if (!user) return;
+
+    projects.update(p => {
+        const newProjects = p.map(project =>
+            project.id === projectId ? { ...project, ...updates } : project
+        );
+        Storage.save(`projects_${user.email}`, newProjects);
+        return newProjects;
+    });
+};
+
+export const addUploadToProject = (projectId, uploadId) => {
+    const user = get(currentUser);
+    if (!user) return;
+
+    projects.update(p => {
+        const newProjects = p.map(project => {
+            if (project.id === projectId) {
+                if (!project.uploadIds.includes(uploadId)) {
+                    return { ...project, uploadIds: [...project.uploadIds, uploadId] };
+                }
+            }
+            return project;
+        });
+        Storage.save(`projects_${user.email}`, newProjects);
+        return newProjects;
+    });
+};
+
+export const removeUploadFromProject = (projectId, uploadId) => {
+    const user = get(currentUser);
+    if (!user) return;
+
+    projects.update(p => {
+        const newProjects = p.map(project => {
+            if (project.id === projectId) {
+                return {
+                    ...project,
+                    uploadIds: project.uploadIds.filter(id => id !== uploadId)
+                };
+            }
+            return project;
+        });
+        Storage.save(`projects_${user.email}`, newProjects);
+        return newProjects;
+    });
 };
 
 export { Storage };
