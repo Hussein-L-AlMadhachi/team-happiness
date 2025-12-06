@@ -1,25 +1,57 @@
 <script>
-  import Router from "svelte-spa-router";
-  import Nav from "./lib/components/nav.svelte";
+  import { onMount } from "svelte";
+  import { currentUser, currentView, loadUserData } from "./lib/store.js";
+  import Navbar from "./lib/Navbar.svelte";
+  import Auth from "./lib/Auth.svelte";
+  import Dashboard from "./lib/Dashboard.svelte";
+  import History from "./lib/History.svelte";
+  import Demo from "./lib/Demo.svelte";
+  import Tokens from "./lib/Tokens.svelte";
+  import Toast from "./lib/Toast.svelte";
 
-  // Import components
-  import Home from "./lib/components/Home.svelte";
-  import LoginPage from "./lib/components/login-01/+page.svelte";
-  import SignupPage from "./lib/components/signup-01/+page.svelte";
+  onMount(() => {
+    // Check for hash change to update view
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        currentView.set(hash);
+      }
+    };
 
-  import "./app.css";
+    window.addEventListener("hashchange", handleHashChange);
 
-  const routes = {
-    "/": Home,
-    "/login": LoginPage,
-    "/signup": SignupPage,
-  };
+    // Initial load
+    if (window.location.hash) {
+      handleHashChange();
+    }
+
+    // Load user data if logged in
+    if ($currentUser) {
+      loadUserData();
+    }
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  });
 </script>
 
-<main>
-  <Nav />
-  <Router {routes} />
-</main>
+<Toast />
 
-<style>
-</style>
+{#if !$currentUser}
+  <Auth />
+{:else}
+  <div id="app-view" class="view active">
+    <Navbar />
+
+    {#if $currentView === "dashboard"}
+      <Dashboard />
+    {:else if $currentView === "history"}
+      <History />
+    {:else if $currentView === "demo"}
+      <Demo />
+    {:else if $currentView === "tokens"}
+      <Tokens />
+    {/if}
+  </div>
+{/if}
