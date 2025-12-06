@@ -10,6 +10,8 @@
     } from "./store.js";
     import { addToast } from "./toastStore.js";
 
+    import { uploadImage } from "./uploadImage.js";
+
     let currentFile = null;
     let previewSrc = "";
     let isProcessing = false;
@@ -75,8 +77,9 @@
                 incrementCacheHits();
                 addToast("Result loaded from cache!", "success");
             } else {
-                const imageData = await Utils.fileToBase64(currentFile);
-                extractedText = await Utils.simulateOCR(imageData);
+                // Upload and process image
+                const result = await uploadImage(currentFile);
+                extractedText = result.description;
                 fromCache = false;
                 saveToCache(hash, extractedText);
             }
@@ -94,7 +97,7 @@
             step = "result";
         } catch (error) {
             console.error("Processing error:", error);
-            addToast("Error processing image", "error");
+            addToast(error.message || "Error processing image", "error");
             reset();
         } finally {
             isProcessing = false;

@@ -5,12 +5,13 @@
   "scripts": {
     "db:create": "tsc && node ./dist/cli/create.js",
     "db:alter": "tsc && node ./dist/cli/alter.js",
-    "dev": "tsc && node ./dist/src/main.js"
+    "dev": "tsc && node ./dist/src/app.js"
   },
   "dependencies": {
     "@types/multer": "^2.0.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
-    "enders-sync": "latest",
+    "enders-sync": "^0.2.5",
     "express": "latest",
     "jsonwebtoken": "latest",
     "multer": "^2.0.2",
@@ -19,6 +20,7 @@
     "redis": "^5.10.0"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "latest",
     "@types/jsonwebtoken": "latest",
     "@types/node": "latest"

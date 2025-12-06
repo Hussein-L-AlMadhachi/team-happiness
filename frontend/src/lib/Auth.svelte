@@ -18,22 +18,22 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         emailError = "";
         if (!validateEmail(email)) {
             emailError = "Please enter a valid email";
             return;
         }
 
-        const success = login(email, password);
-        if (success) {
+        try {
+            await login(email, password);
             addToast("Welcome back!", "success");
-        } else {
-            addToast("Invalid email or password", "error");
+        } catch (error) {
+            addToast(error.message || "Invalid email or password", "error");
         }
     };
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         emailError = "";
         passwordError = "";
         confirmError = "";
@@ -53,11 +53,11 @@
             return;
         }
 
-        const success = register(name, email, password);
-        if (success) {
+        try {
+            await register(name, email, password);
             addToast("Account created successfully!", "success");
-        } else {
-            addToast("An account with this email already exists", "error");
+        } catch (error) {
+            addToast(error.message || "Registration failed", "error");
         }
     };
 

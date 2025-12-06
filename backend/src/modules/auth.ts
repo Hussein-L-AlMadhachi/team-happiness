@@ -25,6 +25,11 @@ export function generateRoleAuth(role: string): Validator {
     return (req: Request) => {
         try {
             const token = req.cookies["auth-token"];
+
+            if (!token) {
+                return { success: false };
+            }
+
             const decoded = jwt.verify(token, JWT_SECRET as string) as unknown as TokenMetadata;
 
             if (typeof decoded.user_id !== "number" || typeof decoded.role !== "string") {
@@ -51,6 +56,8 @@ export function generateRoleAuth(role: string): Validator {
             };
 
         } catch (error) {
+            console.error(error);
+
             return { success: false };
         }
     }
@@ -65,6 +72,7 @@ interface loggedIn {
 
 
 
+
 export async function login(
     metadata: Metadata, username: string | undefined, password: string | undefined
 ): Promise<loggedIn> {
@@ -73,7 +81,10 @@ export async function login(
         throw new TypeError("RPC expects a username:string , password:string as input")
     }
 
-    const user = await users.fetchAfterAuth(username, password, ["role", "id"]);
+    const user = await users.fetchAfterAuth(
+        username, password,
+        ["role", "id"]
+    );
 
     if (!user) {
         throw new Error("Unauthorized");
@@ -88,7 +99,7 @@ export async function login(
             { role: user_role, user_id: user_id },
             JWT_SECRET,
             {
-                expiresIn: '1h', // Token expires in 1 hour
+                expiresIn: 60 * 60 * 24 * 1000 * 1000, // Token expires in 1 hour
                 issuer: `${user_role}-auth-service`,
                 audience: user_role
             }
@@ -98,7 +109,7 @@ export async function login(
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 60 * 60 // 1 hour
+            maxAge: 60 * 60 * 24 * 1000 * 1000 // 1 day
         });
 
         return {
@@ -111,6 +122,7 @@ export async function login(
     }
 
 }
+
 
 
 export function isValidNoRPC(req: Request, res: Response) {

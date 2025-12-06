@@ -1,4 +1,5 @@
 import { writable, get } from 'svelte/store';
+import { publicRPC } from './api.js';
 
 // ===================================
 // Storage Manager
@@ -169,31 +170,32 @@ export const revokeToken = (tokenId) => {
 };
 
 // Auth Actions
-export const login = (email, password) => {
-    const users = Storage.load('users', {});
-    const user = users[email];
-
-    if (!user || user.password !== password) {
-        return false;
+export const login = async (email, password) => {
+    try {
+        const result = await publicRPC.login(email, password);
+        // result is { role: string, user_id: number }
+        // We need to fetch the profile to get the name
+        // But for now let's just set the email
+        currentUser.set({ email: email, name: "User", id: result.user_id, role: result.role });
+        loadUserData();
+        return true;
+    } catch (error) {
+        console.error("Login error:", error);
+        throw error; // Re-throw to be handled by the UI
     }
-
-    currentUser.set({ email: user.email, name: user.name });
-    loadUserData();
-    return true;
 };
 
-export const register = (name, email, password) => {
-    const users = Storage.load('users', {});
-    if (users[email]) {
-        return false; // User exists
-    }
+export const register = async (name, email, password) => {
 
-    users[email] = { name, email, password };
-    Storage.save('users', users);
-
-    currentUser.set({ email, name });
-    loadUserData();
-    return true;
+    const value = await publicRPC.registerUser({ name, email, password });
+    console.log("REGISTERING", value)
+    // Auto login after register? Or just return true
+    // Let's auto login
+    return await login(email, password);
+    // } catch (error) {
+    //     console.error("Register error:", error);
+    //     throw error;
+    // }
 };
 
 export const logout = () => {

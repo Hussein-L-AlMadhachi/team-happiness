@@ -7,7 +7,7 @@ export class FoldersTable extends PG_Table {
 
     constructor(pg_app: PG_App) {
         //     app  , table_name ,                          visible columns
-        super(pg_app, 'folders', ["id", 'owner', 'file_hash', 'file_name', 'description', 'created_at']);
+        super(pg_app, 'folders', ["id", 'owner', 'name', 'created_at']);
     }
 
     public async create() {

@@ -18,7 +18,7 @@ export async function analyzeImage(image_path: string) {
         // Send a request to Ollama with the LLaVA model and the image data
         const message = {
             role: 'user',
-            content: 'What is in this image?',
+            content: 'extract text characters from the image and return it without any addition text from you',
             images: [base64Image]
         };
         const response = await ollama.chat({

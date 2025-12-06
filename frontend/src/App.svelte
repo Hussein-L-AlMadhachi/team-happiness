@@ -7,6 +7,7 @@
   import History from "./lib/History.svelte";
   import Demo from "./lib/Demo.svelte";
   import Tokens from "./lib/Tokens.svelte";
+  import Folders from "./lib/Folders.svelte";
   import Toast from "./lib/Toast.svelte";
 
   onMount(() => {
@@ -52,6 +53,8 @@
       <Demo />
     {:else if $currentView === "tokens"}
       <Tokens />
+    {:else if $currentView === "folders"}
+      <Folders />
     {/if}
   </div>
 {/if}

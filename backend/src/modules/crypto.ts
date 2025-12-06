@@ -16,11 +16,16 @@ export function hashFile(filePath: string, algorithm: string = 'sha256'): Promis
 
 
 
-export function generateRandomBase64(bytes = 32) {
-    const buffer = new Uint8Array(bytes);
-    crypto.getRandomValues(buffer);
-    // Convert to base64
-    const base64 = btoa(String.fromCharCode(...buffer));
+export function generateRandomBase64() {
+    // Generate random bytes and convert to base64
+    const randomBytes = crypto.randomBytes(32); // Adjust size as needed
+    let base64 = randomBytes.toString('base64');
+
+    // Replace unsafe URL characters
+    base64 = base64
+        .replace(/\//g, '_')    // Replace / with _
+        .replace(/\+/g, '-')    // Replace + with -
+        .replace(/=/g, '');     // Remove padding
+
     return base64;
 }
-

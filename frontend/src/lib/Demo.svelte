@@ -3,6 +3,8 @@
     import { demoUploads, Storage } from "./store.js";
     import { addToast } from "./toastStore.js";
 
+    import { uploadImage } from "./uploadImage.js";
+
     const MAX_UPLOADS = 5;
     let currentFile = null;
     let previewSrc = "";
@@ -69,8 +71,8 @@
         step = "processing";
 
         try {
-            const imageData = await Utils.fileToBase64(currentFile);
-            extractedText = await Utils.simulateOCR(imageData);
+            const result = await uploadImage(currentFile);
+            extractedText = result.description;
 
             // Increment demo count
             demoUploads.update((n) => {
@@ -83,7 +85,7 @@
             step = "result";
         } catch (error) {
             console.error("Processing error:", error);
-            addToast("Error processing image", "error");
+            addToast(error.message || "Error processing image", "error");
             reset();
         }
     };

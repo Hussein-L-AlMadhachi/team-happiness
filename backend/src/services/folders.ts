@@ -6,7 +6,7 @@ import type { Metadata } from "enders-sync";
 
 
 export async function getFolders(metadata: Metadata) {
-    const uid = metadata.auth.id;
+    const uid = metadata.auth.user_id;
 
     if (typeof uid !== "number") {
         throw new Error("Unexpected error: user_id cannot be anythin but a number");
@@ -24,7 +24,7 @@ export async function getFolders(metadata: Metadata) {
 
 
 export async function newFolder(metadata: Metadata, name: string) {
-    const uid = metadata.auth.id;
+    const uid = metadata.auth.user_id;
 
     if (typeof uid !== "number") {
         throw new Error("Unexpected error: user_id cannot be anythin but a number");
@@ -42,7 +42,7 @@ export async function newFolder(metadata: Metadata, name: string) {
 
 
 export async function changeName(metadata: Metadata, folder_id: number, new_name: string) {
-    const uid = metadata.auth.id;
+    const uid = metadata.auth.user_id;
 
     if (typeof uid !== "number") {
         throw new Error("Unexpected error: user_id cannot be anythin but a number");
@@ -59,7 +59,7 @@ export async function changeName(metadata: Metadata, folder_id: number, new_name
 
 
 export async function deleteFolder(metadata: Metadata, folder_id: number) {
-    const uid = metadata.auth.id;
+    const uid = metadata.auth.user_id;
 
     if (typeof uid !== "number") {
         throw new Error("Unexpected error: user_id cannot be anythin but a number");

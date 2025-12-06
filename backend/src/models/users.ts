@@ -6,7 +6,7 @@ export class UsersTable extends PG_AuthTable {
 
     constructor(pg_app: PG_App) {
         //      app  , table_name ,           visible columns             ,  identify user by
-        super(pg_app, 'users', ["id", 'name', 'role', 'email', "limits"], "email");
+        super(pg_app, 'users', ["id", 'name', 'role', 'email', "password"], "email");
     }
 
     public async create() {
@@ -20,7 +20,6 @@ export class UsersTable extends PG_AuthTable {
                 email VARCHAR(255) UNIQUE NOT NULL,
                 ${this.sql(this.passwordField)} TEXT NOT NULL,
 
-                limits VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT NOW()
             )
         `;
