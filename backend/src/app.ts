@@ -5,6 +5,7 @@ import { login } from './modules/auth.js';
 import { registerUser, registerAdmin, update, deleteUser, getProfile } from "./services/profile.js";
 import { authValidator } from './auth_roles.js';
 import { addToFolder, deleteUpload, getUploads, removeFromFolder } from './services/uploads.js';
+import { changeName, deleteFolder, getFolders, newFolder } from './services/folders.js';
 
 
 
@@ -18,19 +19,8 @@ export const publicRPC = createRPC(app, '/api/public', () => ({
     success: true
 }));
 
-
-
 publicRPC.add(login);
 publicRPC.add(registerUser)
-
-
-
-// Admin RPC instance
-export const adminsRPC = createRPC(app, '/api/admin', authValidator.admin);
-adminsRPC.add(update)
-adminsRPC.add(deleteUser)
-adminsRPC.add(getProfile)
-
 
 
 // Users RPC instance
@@ -45,9 +35,9 @@ usersRPC.add(deleteUpload)
 usersRPC.add(addToFolder)
 usersRPC.add(removeFromFolder)
 
+// managing folders
+usersRPC.add(getFolders)
+usersRPC.add(newFolder)
+usersRPC.add(changeName)
+usersRPC.add(deleteFolder)
 
-
-export const rateLimitedRPC = createRPC(app, '/api/rate-limited', authValidator.users);
-rateLimitedRPC.add(update)
-rateLimitedRPC.add(deleteUser)
-rateLimitedRPC.add(getProfile)

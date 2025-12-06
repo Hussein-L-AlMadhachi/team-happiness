@@ -63,11 +63,15 @@ Before you begin, ensure you have the following installed:
     
     Create a `.env` file in the `backend` directory. You can copy the example if available or set the following variables:
     ```env
-    PORT=3000
-    DATABASE_URL=postgres://user:password@localhost:5432/team_happiness
-    REDIS_URL=redis://localhost:6379
-    JWT_SECRET=your_super_secret_key
-    OLLAMA_HOST=http://localhost:11434
+    JWT_SECRET=your-jwt-secret
+
+    PG_HOST=your-db-host
+    PG_DB=your-db-name
+    PG_USER=your-db-user
+    PG_PASSWORD=your-db-password
+
+    OLLAMA_HOST=your-ollama-llava-host
+    REDIS_URL=your-redis-url
     ```
 
 4.  **Database Setup**

@@ -41,14 +41,14 @@ export async function newFolder(metadata: Metadata, name: string) {
 
 
 
-export async function rename(metadata: Metadata, file_id: number, new_name: string) {
+export async function changeName(metadata: Metadata, folder_id: number, new_name: string) {
     const uid = metadata.auth.id;
 
     if (typeof uid !== "number") {
         throw new Error("Unexpected error: user_id cannot be anythin but a number");
     }
 
-    const [file] = await folders.rename(uid, file_id, new_name);
+    const [file] = await folders.rename(uid, folder_id, new_name);
 
     if (!file) {
         throw new Error("failed to rename file")
@@ -57,4 +57,20 @@ export async function rename(metadata: Metadata, file_id: number, new_name: stri
     return file.id;
 }
 
+
+export async function deleteFolder(metadata: Metadata, folder_id: number) {
+    const uid = metadata.auth.id;
+
+    if (typeof uid !== "number") {
+        throw new Error("Unexpected error: user_id cannot be anythin but a number");
+    }
+
+    const [file] = await folders.deleteUserFolder(uid, folder_id);
+
+    if (!file) {
+        throw new Error("failed to delete folder")
+    }
+
+    return file.id;
+}
 
